@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/03 12:00:50 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/05 21:27:54 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/07 16:28:25 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ size_t				ft_strlen(const char *s)
 
 char				*ft_strlcpy(char *dest, const char *src, size_t n)
 {
-	size_t			len;
 	size_t			i;
 	char			*psrc;
 
 	i = 0;
 	psrc = (char*)src;
-	len = ft_strlen(psrc);
-	while (len--)
+	while (n--)
 	{
 		dest[i] = psrc[i];
 		i++;

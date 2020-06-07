@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/03 12:00:19 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/06 14:40:08 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/07 16:57:35 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,54 @@
 #include <sys/stat.h>
 #include "get_next_line.h"
 
+static void		dup_with_free(char *dup, char **line)
+{
+	char		*tmp;
+
+	tmp = NULL;
+	if (*line)
+		tmp = *line;
+	*line = ft_strdup(dup);
+	if (tmp)
+		free(tmp);
+}
+
+static void		join_with_free(char **line, char *buf)
+{
+	char		*tmp;
+
+	tmp = NULL;
+	if (*line)
+		tmp = *line;
+	*line = ft_strjoin(*line, buf);
+	if (tmp)
+		free(tmp);
+}
+
 static char		*is_kept(char *keeper, char **line)
 {
 	char		*ptr;
+	char		*tmp;
 
 	ptr = NULL;
 	if (*keeper)
-		if (ptr = ft_strchr(keeper, '\n'))
+	{
+		ptr = ft_strchr(keeper, '\n');
+		if (ptr)
 		{
 			*ptr = 0;
-			*line = ft_strdup(keeper);
-			ft_strlcpy(keeper, ++ptr, ft_strlen(ptr));
+			dup_with_free(keeper, line);
+			ptr++;
+			ft_strlcpy(keeper, ptr, ft_strlen(ptr));
 		}
 		else
 		{
-			*line = ft_strdup(keeper);
+			dup_with_free(keeper, line);
 		}
+	}
 	else
 		*line = ft_strdup("");
 	return (ptr);
-	
 }
 
 int				get_next_line(int fd, char **line)
@@ -56,9 +84,9 @@ int				get_next_line(int fd, char **line)
 		if ((ptrn = ft_strchr(buf, '\n')))
 		{
 			*ptrn = 0;
-			keeper = ft_strdup(++ptrn);
+			dup_with_free(++ptrn, &keeper);
 		}
-		*line = ft_strjoin(*line, buf);
+		join_with_free(line, buf);
 	}
 	if (ft_strlen(keeper) || ft_strlen(*line) || control)
 		return (1);
