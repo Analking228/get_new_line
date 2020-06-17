@@ -5,90 +5,78 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/03 12:00:19 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/07 16:57:35 by cjani            ###   ########.fr       */
+/*   Created: 2020/06/10 20:09:29 by flexer            #+#    #+#             */
+/*   Updated: 2020/06/17 13:09:42 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include <sys/types.h>
-#include <sys/stat.h>
 #include "get_next_line.h"
 
-static void		dup_with_free(char *dup, char **line)
+static char	*add_buf(char *line, char *buf)
 {
-	char		*tmp;
+	char *tmp;
 
-	tmp = NULL;
-	if (*line)
-		tmp = *line;
-	*line = ft_strdup(dup);
-	if (tmp)
-		free(tmp);
-}
-
-static void		join_with_free(char **line, char *buf)
-{
-	char		*tmp;
-
-	tmp = NULL;
-	if (*line)
-		tmp = *line;
-	*line = ft_strjoin(*line, buf);
-	if (tmp)
-		free(tmp);
-}
-
-static char		*is_kept(char *keeper, char **line)
-{
-	char		*ptr;
-	char		*tmp;
-
-	ptr = NULL;
-	if (*keeper)
+	if (line)
 	{
-		ptr = ft_strchr(keeper, '\n');
-		if (ptr)
-		{
-			*ptr = 0;
-			dup_with_free(keeper, line);
-			ptr++;
-			ft_strlcpy(keeper, ptr, ft_strlen(ptr));
-		}
-		else
-		{
-			dup_with_free(keeper, line);
-		}
+		tmp = line;
+		line = ft_strjoin(line, buf);
+		free(tmp);
 	}
 	else
-		*line = ft_strdup("");
-	return (ptr);
+		line = ft_strdup(buf);
+	return (line);
 }
 
-int				get_next_line(int fd, char **line)
+static char	*keeper_separator(char **line, ssize_t size)
 {
-	static int	control;
-	static char	buf[BUFFER_SIZE + 1];
-	char		*ptrn;
-	static char	*keeper;
+	size_t	i;
+	char	*tmp;
+	char	*keeper;
+	size_t	len;
 
-	if(!control)
+	if (!*line)
+		return (NULL);
+	len = ft_strlen(*line);
+	i = 0;
+	while ((*line)[i] != '\n' && i < len)
+		i++;
+	if (i < len)
 	{
-		keeper = (char*)malloc(sizeof(char));
-		*keeper = 0;
+		tmp = *line;
+		keeper = ft_substr(*line, i + 1, len);
+		*line = ft_substr(*line, 0, i);
+		free(tmp);
+		return (keeper);
 	}
-	ptrn = is_kept(keeper, line);
-	while (!ptrn && (control = read(fd, buf, BUFFER_SIZE)))
-	{
-		buf[control] = 0;
-		if ((ptrn = ft_strchr(buf, '\n')))
-		{
-			*ptrn = 0;
-			dup_with_free(++ptrn, &keeper);
-		}
-		join_with_free(line, buf);
-	}
-	if (ft_strlen(keeper) || ft_strlen(*line) || control)
-		return (1);
-	return (0);
+	else
+		return (NULL);
 }
+
+int			get_next_line(int fd, char **line)
+{
+	static char	*keeper;
+	char		buf[BUFFER_SIZE + 1];
+	ssize_t		size;
+
+	if (fd < 0 || !line || read(fd, buf, 0) != 0)
+		return (-1);
+	*line = keeper;
+	while ((size = read(fd, buf, BUFFER_SIZE)))
+	{
+		buf[size] = 0;
+		if (!(*line = add_buf(*line, buf)))
+			return (-1);
+		if (ft_strchr(buf, '\n'))
+			break ;
+	}
+	keeper = keeper_separator(line, size);
+	if (!*line)
+	{
+		*line = ft_strdup("");
+		return (0);
+	}
+	if (!keeper)
+		return (0);
+	return (1);
+}
+

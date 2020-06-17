@@ -5,54 +5,42 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/03 12:00:50 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/07 16:28:25 by cjani            ###   ########.fr       */
+/*   Created: 2020/06/10 20:09:46 by flexer            #+#    #+#             */
+/*   Updated: 2020/06/17 12:32:33 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t				ft_strlen(const char *s)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t			len;
+	size_t	strl;
+	size_t	newl;
+	size_t	i;
+	char	*sub;
 
-	len = 0;
-	while (s[len] != '\0')
-		len++;
-	return (len);
-}
-
-char				*ft_strlcpy(char *dest, const char *src, size_t n)
-{
-	size_t			i;
-	char			*psrc;
-
-	i = 0;
-	psrc = (char*)src;
-	while (n--)
+	if (!s)
+		return (NULL);
+	i = 0;	
+	strl = ft_strlen(s);
+	if (strl - 1 < (size_t)start)
+		return (ft_strdup(""));
+	if (start + len > strl)
+		newl = strl - (size_t)start;
+	else
+		newl = len;
+	if (!(sub = (char*)malloc(newl + 1)))
+		return (NULL);
+	while (i < newl)
 	{
-		dest[i] = psrc[i];
+		sub[i] = ((char*)s)[(size_t)start + i];
 		i++;
 	}
-	dest[i] = 0;
-	return (dest);
+	sub[newl] = 0;
+	return (sub);
 }
 
-char				*ft_strdup(const char *str)
-{
-	char			*newstr;
-	size_t			len;
-
-	len = ft_strlen(str);
-	newstr = (char *)malloc((len + 1) * sizeof(char));
-	if (!newstr)
-		return (NULL);
-	ft_strlcpy(newstr, str, len);
-	newstr[len + 1] = '\0';
-	return (newstr);
-}
-
-char		*ft_strjoin(char const *prestr, char const *sufstr)
+char	*ft_strjoin(char const *prestr, char const *sufstr)
 {
 	size_t		newl;
 	size_t		i;
@@ -64,7 +52,7 @@ char		*ft_strjoin(char const *prestr, char const *sufstr)
 	i = 0;
 	j = 0;
 	newl = ft_strlen(prestr) + ft_strlen(sufstr) + 1;
-	newptr = (char *)malloc(newl * sizeof(char));
+	newptr = (char*)malloc(newl * sizeof(char));
 	if (!newptr)
 		return (NULL);
 	while (prestr[i])
@@ -76,14 +64,44 @@ char		*ft_strjoin(char const *prestr, char const *sufstr)
 	return (newptr);
 }
 
-char		*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	char		*ptrs;
 
-	ptrs = (char *)s;
+	ptrs = (char*)s;
 	while ((*ptrs != '\0') && (*ptrs != c))
 		ptrs += 1;
 	if (*ptrs == c)
 		return (ptrs);
 	return (NULL);
 }
+
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	char	*newstr;
+	size_t	i;
+
+	len = ft_strlen(s);
+	i = 0;
+	if (!(newstr = (char*)malloc(len + 1)))
+		return (NULL);
+	while (s[i] && i < len)
+	{
+		newstr[i] = s[i];
+		i++;
+	}
+	newstr[i] = 0;
+	return (newstr);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+

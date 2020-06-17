@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/03 12:00:32 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/06 14:42:55 by cjani            ###   ########.fr       */
+/*   Created: 2020/06/10 20:09:59 by flexer            #+#    #+#             */
+/*   Updated: 2020/06/12 18:25:13 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
 # include <unistd.h>
 # include <stdlib.h>
 
-int					get_next_line(int fd, char **line);
-size_t				ft_strlen(const char *s);
-char				*ft_strlcpy(char *dest, const char *src, size_t n);
-char				*ft_strdup(const char *str);
-char				*ft_strjoin(char const *prestr, char const *sufstr);
-char				*ft_strchr(const char *s, int c);
+int		get_next_line(int fd, char **line);
+size_t	ft_strlen(const char *str);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s);
+char	*ft_strjoin(char const *prestr, char const *sufstr);
 
 #endif
+
