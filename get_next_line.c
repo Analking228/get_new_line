@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:09:29 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/17 13:48:08 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/21 15:51:13 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*add_buf(char *line, char *buf)
 	return (line);
 }
 
-static char	*keeper_separator(char **line, ssize_t size)
+static char	*keeper_separator(char **line)
 {
 	size_t	i;
 	char	*tmp;
@@ -69,7 +69,7 @@ int			get_next_line(int fd, char **line)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	keeper = keeper_separator(line, size);
+	keeper = keeper_separator(line);
 	if (!*line)
 	{
 		*line = ft_strdup("");
