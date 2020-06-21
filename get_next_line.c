@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:09:29 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/21 15:51:13 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/21 16:02:00 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int			get_next_line(int fd, char **line)
 	char		buf[BUFFER_SIZE + 1];
 	ssize_t		size;
 
-	if (fd < 0 || !line || read(fd, buf, 0) != 0)
+	if (fd < 0 || !line || read(fd, buf, 0) != 0 || (BUFFER_SIZE) < 1)
 		return (-1);
 	*line = keeper;
 	while ((size = read(fd, buf, BUFFER_SIZE)))
