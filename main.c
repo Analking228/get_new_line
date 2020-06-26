@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:12:02 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/17 13:46:40 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/25 20:46:24 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int main()
     char    *line;
     int     get;
     printf("BUF SIZE = %d\n", BUFFER_SIZE);
-    fd = open("test", O_RDONLY);
+    fd = open("test_output", O_RDONLY);
     while ((get = get_next_line(fd, &line)) > 0)
     {
         printf("|%s\n", line);

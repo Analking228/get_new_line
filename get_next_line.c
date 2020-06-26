@@ -6,7 +6,7 @@
 /*   By: cjani <cjani@studen.21-school.ru>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:09:29 by flexer            #+#    #+#             */
-/*   Updated: 2020/06/21 16:02:00 by cjani            ###   ########.fr       */
+/*   Updated: 2020/06/22 18:56:48 by cjani            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static char	*keeper_separator(char **line)
 		tmp = *line;
 		keeper = ft_substr(*line, i + 1, len);
 		*line = ft_substr(*line, 0, i);
+		if (!*line || !keeper)
+			return (NULL);
 		free(tmp);
 		return (keeper);
 	}
@@ -69,13 +71,9 @@ int			get_next_line(int fd, char **line)
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-	keeper = keeper_separator(line);
+	if (!(keeper = keeper_separator(line)) && size)
+		return (-1);
 	if (!*line)
-	{
-		*line = ft_strdup("");
-		return (0);
-	}
-	if (!keeper)
-		return (0);
-	return (1);
+		return (!(*line = ft_strdup(""))) ? -1 : 0;
+	return (!keeper && !size) ? 0 : 1;
 }
